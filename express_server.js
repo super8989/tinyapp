@@ -7,8 +7,13 @@ const urlDatabase = {
 	'9sm5xK': 'http://www.google.com',
 };
 
+// respond with "hello world" when a GET request is made to the homepage
 app.get('/', (req, res) => {
-	res.send('Hello');
+	res.send('Hello World');
+});
+
+app.get('/urls.json', (req, res) => {
+	res.json(urlDatabase);
 });
 
 app.listen(PORT, () => {
