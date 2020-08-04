@@ -47,10 +47,11 @@ app.get('/urls/:shortURL', (req, res) => {
 });
 
 app.post('/urls', (req, res) => {
-	console.log(req.body); // {longURL: 'www.apple.com'}
-	urlDatabase[generateRandomString()] = req.body.longURL;
+	console.log(req.body); // {longURL: 'http://www.apple.com'}
+	const shortURL = generateRandomString();
+	const longURL = req.body.longURL;
 
-	res.send('OK');
+	urlDatabase[shortURL] = longURL;
 });
 
 app.listen(PORT, () => {
