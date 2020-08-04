@@ -1,9 +1,13 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const app = express();
 const PORT = 8080;
 
 // express to use ejs as templating engine
 app.set('view engine', 'ejs');
+
+// convert request body from a Buffer into string and then add the data to req object under the key of 'body'
+app.use(bodyParser.urlencoded({ extended: true }));
 
 const urlDatabase = {
 	b2xVn2: 'http://www.lighthouselabs.ca',
@@ -36,10 +40,6 @@ app.get('/urls/:shortURL', (req, res) => {
 	};
 	res.render('urls_show', templateVars);
 });
-
-// app.get('/hello', (req, res) => {
-// 	res.send('<html><body>Hello <b>World HTML</b></body></html>\n');
-// });
 
 app.listen(PORT, () => {
 	console.log(`Example app listening on port ${PORT}!`);
