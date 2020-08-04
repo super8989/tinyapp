@@ -22,10 +22,11 @@
     </div>
     <div class="card-footer text-muted">
       <h1>Edit</h1>
-      <form class='form-inline' action="/urls/:id" method='POST'>
+      <!-- is that the right action URL? -->
+      <form class='form-inline' action="/urls/<%= shortURL %>" method='POST'>
         <div class="form-group mb-2">
-          <label for="updateLongURL">New URL:</label>
-          <input type="text" class="form-control" name='updateLongURL' placeholder="http://"
+          <label for="updatedLongURL">New URL:</label>
+          <input type="text" class="form-control" name='updatedLongURL' placeholder="http://"
             style="width: 300px; margin: 1em">
           <button type='submit' class="btn btn-primary">Submit</button>
         </div>
