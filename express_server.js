@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const morgan = require('morgan');
 const app = express();
 const PORT = 8080;
 
@@ -8,6 +9,9 @@ app.set('view engine', 'ejs');
 
 // convert request body from a Buffer into string and then add the data to req object under the key of 'body'
 app.use(bodyParser.urlencoded({ extended: true }));
+
+// Log all requests to STDOUT
+app.use(morgan('dev'));
 
 const urlDatabase = {
 	b2xVn2: 'http://www.lighthouselabs.ca',
