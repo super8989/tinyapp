@@ -1,6 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
+const cookieParser = require('cookie-parser');
+
 const app = express();
 const PORT = 8080;
 
@@ -9,6 +11,9 @@ app.set('view engine', 'ejs');
 
 // convert request body from a Buffer into string and then add the data to req object under the key of 'body'
 app.use(bodyParser.urlencoded({ extended: true }));
+
+// Parse Cookie header and populate req.cookies with an object keyed by the cookie names.
+app.use(cookieParser());
 
 // Log all requests to STDOUT
 app.use(morgan('dev'));
