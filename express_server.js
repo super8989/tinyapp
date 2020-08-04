@@ -95,6 +95,16 @@ app.post('/urls/:shortURL/delete', (req, res) => {
 	res.send('Delete OK');
 });
 
+// Set a cookie submitted by the login form in the _header
+app.post('/login', (req, res) => {
+	console.log('req.body', req.body); // { username: 'username' }
+
+	res.cookie('username', req.body.username);
+
+	// how to check if i set the cookies?
+	res.redirect('/urls');
+});
+
 app.listen(PORT, () => {
 	console.log(`Example app listening on port ${PORT}!`);
 });
