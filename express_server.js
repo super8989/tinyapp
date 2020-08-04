@@ -53,8 +53,9 @@ app.get('/u/:shortURL', (req, res) => {
 	res.redirect(longURL);
 });
 
+// Create a tiny URL by submitting a longURL, generate random shortURL and add it to database: from urls_new
 app.post('/urls', (req, res) => {
-	console.log(req.body); // {longURL: 'http://www.apple.com'}
+	// console.log(req.body); // {longURL: 'http://www.apple.com'}
 	const shortURL = generateRandomString();
 	const longURL = req.body.longURL;
 
@@ -63,10 +64,10 @@ app.post('/urls', (req, res) => {
 	res.redirect(`/urls/${shortURL}`);
 });
 
+// Update longURL in the database: from urls_show
 app.post('/urls/:id', (req, res) => {
-	console.log('req.body', req.body);
-	console.log('req.params', req.params);
-
+	// console.log('req.body', req.body);
+	// console.log('req.params', req.params);
 	const shortURL = req.params.id;
 	const { updatedLongURL } = req.body;
 
@@ -75,11 +76,11 @@ app.post('/urls/:id', (req, res) => {
 	res.send('Update OK');
 });
 
+// Delete URL from database: from urls_index
 app.post('/urls/:shortURL/delete', (req, res) => {
-	console.log(req.body); // {}
-	console.log(req.params); // {shortURL: '<selectedShortURL>'}
+	// console.log(req.body); // {}
+	// console.log(req.params); // {shortURL: '<selectedShortURL>'}
 	const shortURL = req.params.shortURL;
-
 	delete urlDatabase[shortURL];
 
 	res.send('Delete OK');
