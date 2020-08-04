@@ -14,6 +14,11 @@ const urlDatabase = {
 	'9sm5xK': 'http://www.google.com',
 };
 
+// return a string of 6 random alphanumeric characters
+function generateRandomString() {
+	return Math.random().toString(36).substr(2, 6);
+}
+
 // respond with "hello world" when a GET request is made to the homepage
 app.get('/', (req, res) => {
 	res.send('Hello World');
