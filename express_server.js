@@ -67,21 +67,21 @@ app.get('/urls.users', (req, res) => {
 
 app.get('/urls', (req, res) => {
 	console.log('Cookies', req.cookies); // {username: 'sam' }
-	const currentUser = req.cookies.username; // randomID
+	const currentUser = req.cookies.user_id; // randomID
 	const templateVars = { urls: urlDatabase, user: users[currentUser] };
 
 	res.render('urls_index', templateVars);
 });
 
 app.get('/urls/new', (req, res) => {
-	const currentUser = req.cookies.username; // randomID
+	const currentUser = req.cookies.user_id; // randomID
 	const templateVars = { user: users[currentUser] };
 
 	res.render('urls_new', templateVars);
 });
 
 app.get('/urls/:shortURL', (req, res) => {
-	const currentUser = req.cookies.username; // randomID
+	const currentUser = req.cookies.user_id; // randomID
 	const templateVars = {
 		shortURL: req.params.shortURL,
 		longURL: urlDatabase[req.params.shortURL],
@@ -98,14 +98,14 @@ app.get('/u/:shortURL', (req, res) => {
 });
 
 app.get('/register', (req, res) => {
-	const currentUser = req.cookies.username; // randomID
+	const currentUser = req.cookies.user_id; // randomID
 	const templateVars = { user: users[currentUser] };
 
 	res.render('urls_register', templateVars);
 });
 
 app.get('/login', (req, res) => {
-	const currentUser = req.cookies.username; // randomID
+	const currentUser = req.cookies.user_id; // randomID
 	const templateVars = { user: users[currentUser] };
 
 	res.render('urls_login', templateVars);
@@ -154,27 +154,30 @@ app.post('/login', (req, res) => {
 
 	if (req.body.email === '' || req.body.password === '') {
 		res.status(403).send('Email and password must be submitted');
+		return;
 	}
 
 	if (!checkEmail(users, submittedEmail)) {
 		res.status(403).send('Email not found');
+		return;
 	}
 
 	if (checkEmail(users, submittedEmail)) {
 		const foundUser = checkEmail(users, submittedEmail);
 
 		if (foundUser.password === submittedPassword) {
-			res.cookie('username', foundUser.id);
+			res.cookie('user_id', foundUser.id);
 			res.redirect('/urls');
 		} else {
 			res.status(403).send('Incorrect password');
+			return;
 		}
 	}
 });
 
 // Log out and clear cookie: _header
 app.post('/logout', (req, res) => {
-	res.clearCookie('username');
+	res.clearCookie('user_id');
 	res.redirect('/urls');
 });
 
@@ -195,7 +198,7 @@ app.post('/register', (req, res) => {
 		};
 		console.log(users);
 
-		res.cookie('username', randomID);
+		res.cookie('user_id', randomID);
 		res.redirect('/urls');
 	}
 });
