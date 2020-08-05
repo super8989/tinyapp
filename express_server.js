@@ -23,7 +23,7 @@ const urlDatabase = {
 	'9sm5xK': 'http://www.google.com',
 };
 
-const users = {};
+const users = {}; // { a17s4a: { id: 'a17s4a', email: 'sam@gmail.com', password: 'test' }, {...} }
 
 // return a string of 6 random alphanumeric characters
 function generateRandomString() {
