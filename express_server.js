@@ -31,14 +31,23 @@ function generateRandomString() {
 }
 
 // Check if submitted email is in the user database
-const checkEmail = (userDB, submittedEmail) => {
+const checkEmail = (userDB, email) => {
 	for (user in userDB) {
-		if (userDB[user].email === submittedEmail) {
-			return true;
+		if (userDB[user].email === email) {
+			return userDB[user];
 		}
 	}
 	return false;
 };
+
+// const checkPassword = (userDB, password) => {
+// 	for (user in userDB) {
+// 		if (userDB[user].password === password) {
+// 			return true;
+// 		}
+// 	}
+// 	return false;
+// };
 
 // GET
 
@@ -137,15 +146,29 @@ app.post('/urls/:shortURL/delete', (req, res) => {
 	res.send('Delete OK');
 });
 
-// Set a cookie submitted by the login form in the _header
+// Set a cookie submitted by the login form in the urls_login
 app.post('/login', (req, res) => {
-	console.log('req.body', req.body); // { username: 'username' }
+	console.log('req.body', req.body); // { email: <email>, password: <password> }
+	const submittedEmail = req.body.email;
+	const submittedPassword = req.body.password;
+
 	if (req.body.email === '' || req.body.password === '') {
-		res.status(400).send('Email and password must be submitted');
-	} else {
-		res.cookie('username', req.body.username);
-		// how to check if i set the cookies?
-		res.redirect('/urls');
+		res.status(403).send('Email and password must be submitted');
+	}
+
+	if (!checkEmail(users, submittedEmail)) {
+		res.status(403).send('Email not found');
+	}
+
+	if (checkEmail(users, submittedEmail)) {
+		const foundUser = checkEmail(users, submittedEmail);
+
+		if (foundUser.password === submittedPassword) {
+			res.cookie('username', foundUser.id);
+			res.redirect('/urls');
+		} else {
+			res.status(403).send('Incorrect password');
+		}
 	}
 });
 
