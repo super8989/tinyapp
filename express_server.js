@@ -95,6 +95,13 @@ app.get('/register', (req, res) => {
 	res.render('urls_register', templateVars);
 });
 
+app.get('/login', (req, res) => {
+	const currentUser = req.cookies.username; // randomID
+	const templateVars = { user: users[currentUser] };
+
+	res.render('urls_login', templateVars);
+});
+
 // POST
 
 // Create a tiny URL by submitting a longURL, generate random shortURL and add it to database: from urls_new
