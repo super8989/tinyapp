@@ -140,11 +140,13 @@ app.post('/urls/:shortURL/delete', (req, res) => {
 // Set a cookie submitted by the login form in the _header
 app.post('/login', (req, res) => {
 	console.log('req.body', req.body); // { username: 'username' }
-
-	res.cookie('username', req.body.username);
-
-	// how to check if i set the cookies?
-	res.redirect('/urls');
+	if (req.body.email === '' || req.body.password === '') {
+		res.status(400).send('Email and password must be submitted');
+	} else {
+		res.cookie('username', req.body.username);
+		// how to check if i set the cookies?
+		res.redirect('/urls');
+	}
 });
 
 // Log out and clear cookie: _header
