@@ -25,7 +25,9 @@ const urlDatabase = {
 	i3BoGr: { longURL: 'https://www.google.ca', userID: 'aJ48lW' },
 };
 
-const users = {}; // { a17s4a: { id: 'a17s4a', email: 'sam@gmail.com', password: 'test' }, {...} }
+const users = {
+	a17s4a: { id: 'a17s4a', email: 'super8989@gmail.com', password: 'a' },
+};
 
 // return a string of 6 random alphanumeric characters
 function generateRandomString() {
