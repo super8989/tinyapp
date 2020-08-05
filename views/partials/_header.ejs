@@ -11,6 +11,8 @@
         <a class="nav-item nav-link" href="/urls/new">Create New URL</a>
       </div>
 
+      <h5>Logged in as: <%= username %></h5>
+
       <form class='form-inline my-2' action="/login" method='POST'>
         <input type="text" class="form-control mr-2" name='username' placeholder="username">
         <button type='submit' class="btn btn-primary">Submit</button>
