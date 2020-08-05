@@ -133,7 +133,7 @@ app.post('/urls/:id', (req, res) => {
 
 	urlDatabase[shortURL].longURL = updatedLongURL;
 
-	res.send('Update OK');
+	res.redirect('/urls');
 });
 
 // Delete URL from database: from urls_index
@@ -143,7 +143,7 @@ app.post('/urls/:shortURL/delete', (req, res) => {
 	const shortURL = req.params.shortURL;
 	delete urlDatabase[shortURL];
 
-	res.send('Delete OK');
+	res.redirect('/urls');
 });
 
 // Set a cookie submitted by the login form in the urls_login
