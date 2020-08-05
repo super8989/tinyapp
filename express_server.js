@@ -42,6 +42,10 @@ app.get('/urls.json', (req, res) => {
 	res.json(urlDatabase);
 });
 
+app.get('/urls.users', (req, res) => {
+	res.json(users);
+});
+
 app.get('/urls', (req, res) => {
 	console.log('Cookies', req.cookies); // {username: 'sam' }
 	const currentUser = req.cookies.username; // randomID
