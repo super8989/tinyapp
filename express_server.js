@@ -30,6 +30,16 @@ function generateRandomString() {
 	return Math.random().toString(36).substr(2, 6);
 }
 
+// Check if submitted email is in the user database
+const checkEmail = (userDB, submittedEmail) => {
+	for (user in userDB) {
+		if (userDB[user].email === submittedEmail) {
+			return true;
+		}
+	}
+	return false;
+};
+
 // GET
 
 // respond with "hello world" when a GET request is made to the homepage
@@ -139,17 +149,23 @@ app.post('/logout', (req, res) => {
 // Create a new user from: urls_register
 app.post('/register', (req, res) => {
 	// console.log(req.body); // {email: '...com', password: '...'}
-	const randomID = generateRandomString();
+	if (req.body.email === '' || req.body.password === '') {
+		res.status(400).send('Email and password must be submitted');
+	} else if (checkEmail(users, req.body.email)) {
+		res.status(400).send('Email already registered');
+	} else {
+		const randomID = generateRandomString();
 
-	users[randomID] = {
-		id: randomID,
-		email: req.body.email,
-		password: req.body.password,
-	};
-	console.log(users);
+		users[randomID] = {
+			id: randomID,
+			email: req.body.email,
+			password: req.body.password,
+		};
+		console.log(users);
 
-	res.cookie('username', randomID);
-	res.redirect('/urls');
+		res.cookie('username', randomID);
+		res.redirect('/urls');
+	}
 });
 
 app.listen(PORT, () => {
