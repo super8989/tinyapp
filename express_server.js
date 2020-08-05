@@ -19,8 +19,10 @@ app.use(cookieParser());
 app.use(morgan('dev'));
 
 const urlDatabase = {
-	b2xVn2: 'http://www.lighthouselabs.ca',
-	'9sm5xK': 'http://www.google.com',
+	// b2xVn2: 'http://www.lighthouselabs.ca',
+	// '9sm5xK': 'http://www.google.com',
+	b6UTxQ: { longURL: 'https://www.tsn.ca', userID: 'aJ48lW' },
+	i3BoGr: { longURL: 'https://www.google.ca', userID: 'aJ48lW' },
 };
 
 const users = {}; // { a17s4a: { id: 'a17s4a', email: 'sam@gmail.com', password: 'test' }, {...} }
@@ -79,7 +81,7 @@ app.get('/urls/:shortURL', (req, res) => {
 	const currentUser = req.cookies.user_id; // randomID
 	const templateVars = {
 		shortURL: req.params.shortURL,
-		longURL: urlDatabase[req.params.shortURL],
+		longURL: urlDatabase[req.params.shortURL].longURL,
 		user: users[currentUser],
 	};
 	res.render('urls_show', templateVars);
@@ -87,7 +89,7 @@ app.get('/urls/:shortURL', (req, res) => {
 
 app.get('/u/:shortURL', (req, res) => {
 	// req.params: {shortURL: <typedURL> }
-	const longURL = urlDatabase[req.params.shortURL];
+	const longURL = urlDatabase[req.params.shortURL].longURL;
 
 	res.redirect(longURL);
 });
@@ -114,7 +116,10 @@ app.post('/urls', (req, res) => {
 	const shortURL = generateRandomString();
 	const longURL = req.body.longURL;
 
-	urlDatabase[shortURL] = longURL;
+	urlDatabase[shortURL] = {
+		longURL,
+		userID: req.cookies.user_id,
+	};
 
 	res.redirect(`/urls/${shortURL}`);
 });
@@ -126,7 +131,7 @@ app.post('/urls/:id', (req, res) => {
 	const shortURL = req.params.id;
 	const { updatedLongURL } = req.body;
 
-	urlDatabase[shortURL] = updatedLongURL;
+	urlDatabase[shortURL].longURL = updatedLongURL;
 
 	res.send('Update OK');
 });
