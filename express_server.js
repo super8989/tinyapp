@@ -40,15 +40,6 @@ const checkEmail = (userDB, email) => {
 	return false;
 };
 
-// const checkPassword = (userDB, password) => {
-// 	for (user in userDB) {
-// 		if (userDB[user].password === password) {
-// 			return true;
-// 		}
-// 	}
-// 	return false;
-// };
-
 // GET
 
 // respond with "hello world" when a GET request is made to the homepage
@@ -77,7 +68,11 @@ app.get('/urls/new', (req, res) => {
 	const currentUser = req.cookies.user_id; // randomID
 	const templateVars = { user: users[currentUser] };
 
-	res.render('urls_new', templateVars);
+	if (currentUser) {
+		res.render('urls_new', templateVars);
+	} else {
+		res.redirect('/login');
+	}
 });
 
 app.get('/urls/:shortURL', (req, res) => {
