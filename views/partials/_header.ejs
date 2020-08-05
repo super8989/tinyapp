@@ -13,6 +13,9 @@
 
       <% if (username) { %>
       <h5>Logged in as: <%= username %></h5>
+      <form class='form-inline my-2' action="/logout" method='POST'>
+        <button type='submit' class="btn btn-primary ml-2" name='username'>Logout</button>
+      </form>
       <% } else { %>
       <form class='form-inline my-2' action="/login" method='POST'>
         <input type="text" class="form-control mr-2" name='username' placeholder="username">
