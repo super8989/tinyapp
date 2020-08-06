@@ -85,14 +85,32 @@ app.get('/urls/new', (req, res) => {
 
 app.get('/urls/:shortURL', (req, res) => {
 	const currentUser = req.session.user_id; // randomID
-	const templateVars = {
-		urlDatabase,
-		shortURL: req.params.shortURL,
-		longURL: urlDatabase[req.params.shortURL].longURL,
-		user: users[currentUser],
-	};
 
-	res.render('urls_show', templateVars);
+	for (shortURL in urlDatabase) {
+		if (shortURL === req.params.shortURL) {
+			const templateVars = {
+				urlDatabase,
+				shortURL: req.params.shortURL,
+				longURL: urlDatabase[req.params.shortURL].longURL,
+				user: users[currentUser],
+			};
+
+			res.render('urls_show', templateVars);
+			return;
+		}
+	}
+
+	// *****RENDER A 404 PAGE HERE*****
+	res.send('page does not exist');
+
+	// const templateVars = {
+	// 	urlDatabase,
+	// 	shortURL: req.params.shortURL,
+	// 	longURL: urlDatabase[req.params.shortURL].longURL,
+	// 	user: users[currentUser],
+	// };
+
+	// res.render('urls_show', templateVars);
 });
 
 app.get('/u/:shortURL', (req, res) => {
