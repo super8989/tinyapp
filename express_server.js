@@ -21,12 +21,15 @@ app.use(morgan('dev'));
 const urlDatabase = {
 	// b2xVn2: 'http://www.lighthouselabs.ca',
 	// '9sm5xK': 'http://www.google.com',
-	b6UTxQ: { longURL: 'https://www.tsn.ca', userID: 'aJ48lW' },
+	b6UTxQ: { longURL: 'https://www.tsn.ca', userID: 'aJ48lW' }, // user = super8989@gmail.com
 	i3BoGr: { longURL: 'https://www.google.ca', userID: 'aJ48lW' },
+	t8PsLm: { longURL: 'https://www.apple.ca', userID: 'cP93zw' }, // user = sam@gmail.com
 };
 
 const users = {
 	aJ48lW: { id: 'aJ48lW', email: 'super8989@gmail.com', password: 'a' },
+	cP93zw: { id: 'cP93zw', email: 'sam@gmail.com', password: 'a' },
+	gR27io: { id: 'wC62op', email: 'greg@gmail.com', password: 'a' },
 };
 
 // return a string of 6 random alphanumeric characters
@@ -42,6 +45,18 @@ const checkEmail = (userDB, email) => {
 		}
 	}
 	return false;
+};
+
+// Filters URLs created by the current user
+const urlsForUser = (urlDB, id) => {
+	const filteredObj = {};
+
+	for (item in urlDB) {
+		if (urlDB[item].userID === id) {
+			filteredObj[item] = urlDB[item];
+		}
+	}
+	return filteredObj;
 };
 
 // GET
@@ -63,7 +78,8 @@ app.get('/urls.users', (req, res) => {
 app.get('/urls', (req, res) => {
 	console.log('Cookies', req.cookies); // {username: 'sam' }
 	const currentUser = req.cookies.user_id; // randomID
-	const templateVars = { urls: urlDatabase, user: users[currentUser] };
+	const userUrls = urlsForUser(urlDatabase, currentUser);
+	const templateVars = { urls: userUrls, user: users[currentUser] };
 
 	res.render('urls_index', templateVars);
 });
@@ -82,10 +98,12 @@ app.get('/urls/new', (req, res) => {
 app.get('/urls/:shortURL', (req, res) => {
 	const currentUser = req.cookies.user_id; // randomID
 	const templateVars = {
+		urlDatabase,
 		shortURL: req.params.shortURL,
 		longURL: urlDatabase[req.params.shortURL].longURL,
 		user: users[currentUser],
 	};
+
 	res.render('urls_show', templateVars);
 });
 
