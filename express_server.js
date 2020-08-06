@@ -26,7 +26,7 @@ const urlDatabase = {
 };
 
 const users = {
-	a17s4a: { id: 'a17s4a', email: 'super8989@gmail.com', password: 'a' },
+	aJ48lW: { id: 'aJ48lW', email: 'super8989@gmail.com', password: 'a' },
 };
 
 // return a string of 6 random alphanumeric characters
