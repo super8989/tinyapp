@@ -5,6 +5,8 @@ const cookieParser = require('cookie-parser');
 const bcrypt = require('bcrypt');
 const cookieSession = require('cookie-session');
 
+const { checkEmail } = require('./helpers');
+
 const app = express();
 const PORT = 8080;
 
@@ -47,16 +49,6 @@ const users = {
 function generateRandomString() {
 	return Math.random().toString(36).substr(2, 6);
 }
-
-// Check if submitted email is in the user database
-const checkEmail = (userDB, email) => {
-	for (user in userDB) {
-		if (userDB[user].email === email) {
-			return userDB[user];
-		}
-	}
-	return false;
-};
 
 // Filters URLs created by the current user
 const urlsForUser = (urlDB, id) => {
