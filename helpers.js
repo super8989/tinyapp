@@ -8,4 +8,16 @@ const checkEmail = (userDB, email) => {
 	return false;
 };
 
-module.exports = { checkEmail };
+// Filters URLs created by the current user
+const urlsForUser = (urlDB, id) => {
+	const filteredObj = {};
+
+	for (item in urlDB) {
+		if (urlDB[item].userID === id) {
+			filteredObj[item] = urlDB[item];
+		}
+	}
+	return filteredObj;
+};
+
+module.exports = { checkEmail, urlsForUser };

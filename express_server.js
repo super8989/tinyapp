@@ -5,7 +5,7 @@ const cookieParser = require('cookie-parser');
 const bcrypt = require('bcrypt');
 const cookieSession = require('cookie-session');
 
-const { checkEmail } = require('./helpers');
+const { checkEmail, urlsForUser } = require('./helpers');
 
 const app = express();
 const PORT = 8080;
@@ -49,18 +49,6 @@ const users = {
 function generateRandomString() {
 	return Math.random().toString(36).substr(2, 6);
 }
-
-// Filters URLs created by the current user
-const urlsForUser = (urlDB, id) => {
-	const filteredObj = {};
-
-	for (item in urlDB) {
-		if (urlDB[item].userID === id) {
-			filteredObj[item] = urlDB[item];
-		}
-	}
-	return filteredObj;
-};
 
 // GET
 
