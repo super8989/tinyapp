@@ -24,8 +24,6 @@ app.use(morgan('dev'));
 // const hashedPassword = bcrypt.hashSync(password, 10);
 
 const urlDatabase = {
-	// b2xVn2: 'http://www.lighthouselabs.ca',
-	// '9sm5xK': 'http://www.google.com',
 	b6UTxQ: { longURL: 'https://www.tsn.ca', userID: 'aJ48lW' }, // user = super8989@gmail.com
 	i3BoGr: { longURL: 'https://www.google.ca', userID: 'aJ48lW' },
 	t8PsLm: { longURL: 'https://www.apple.ca', userID: 'cP93zw' }, // user = sam@gmail.com
@@ -236,7 +234,7 @@ app.post('/register', (req, res) => {
 		users[randomID] = {
 			id: randomID,
 			email: req.body.email,
-			password: req.body.password,
+			password: bcrypt.hashSync(req.body.password, 10),
 		};
 		console.log(users);
 
