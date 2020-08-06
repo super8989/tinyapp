@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
+const bcrypt = require('bcrypt');
 
 const app = express();
 const PORT = 8080;
@@ -17,6 +18,10 @@ app.use(cookieParser());
 
 // Log all requests to STDOUT
 app.use(morgan('dev'));
+
+// Example of using bcrypt for passwords
+// const password = 'purple-monkey-dinosaur'; // found in the req.params object
+// const hashedPassword = bcrypt.hashSync(password, 10);
 
 const urlDatabase = {
 	// b2xVn2: 'http://www.lighthouselabs.ca',
