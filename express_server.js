@@ -161,7 +161,16 @@ app.post('/urls/:shortURL/delete', (req, res) => {
 	// console.log(req.body); // {}
 	// console.log(req.params); // {shortURL: '<selectedShortURL>'}
 	const shortURL = req.params.shortURL;
-	delete urlDatabase[shortURL];
+	const currentUser = req.cookies.user_id;
+
+	if (urlDatabase[shortURL].userID === currentUser) {
+		delete urlDatabase[shortURL];
+	} else {
+		res
+			.status(403)
+			.send('Unable to delete this tiny URL. You do not have permission.');
+		return;
+	}
 
 	res.redirect('/urls');
 });
