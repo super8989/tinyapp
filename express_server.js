@@ -148,10 +148,18 @@ app.post('/urls', (req, res) => {
 app.post('/urls/:id', (req, res) => {
 	// console.log('req.body', req.body);
 	// console.log('req.params', req.params);
+	const currentUser = req.cookies.user_id;
 	const shortURL = req.params.id;
 	const { updatedLongURL } = req.body;
 
-	urlDatabase[shortURL].longURL = updatedLongURL;
+	if (urlDatabase[shortURL].userID === currentUser) {
+		urlDatabase[shortURL].longURL = updatedLongURL;
+	} else {
+		res
+			.status(403)
+			.send('Unable to update this tiny URL. You do not have permission.');
+		return;
+	}
 
 	res.redirect('/urls');
 });
