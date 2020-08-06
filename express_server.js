@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const bcrypt = require('bcrypt');
+const cookieSession = require('cookie-session');
 
 const app = express();
 const PORT = 8080;
@@ -18,6 +19,13 @@ app.use(cookieParser());
 
 // Log all requests to STDOUT
 app.use(morgan('dev'));
+
+app.use(
+	cookieSession({
+		name: 'session',
+		keys: ['key1', 'key2'],
+	})
+);
 
 // Example of using bcrypt for passwords
 // const password = 'purple-monkey-dinosaur'; // found in the req.params object
@@ -79,8 +87,10 @@ app.get('/urls.users', (req, res) => {
 });
 
 app.get('/urls', (req, res) => {
-	console.log('Cookies', req.cookies); // {username: 'sam' }
-	const currentUser = req.cookies.user_id; // randomID
+	// console.log('Cookies', req.cookies); // {username: 'sam' }
+	console.log('Cookies', req.session.user_id);
+
+	const currentUser = req.session.user_id; // randomID
 	const userUrls = urlsForUser(urlDatabase, currentUser);
 	const templateVars = { urls: userUrls, user: users[currentUser] };
 
@@ -88,7 +98,7 @@ app.get('/urls', (req, res) => {
 });
 
 app.get('/urls/new', (req, res) => {
-	const currentUser = req.cookies.user_id; // randomID
+	const currentUser = req.session.user_id; // randomID
 	const templateVars = { user: users[currentUser] };
 
 	if (currentUser) {
@@ -99,7 +109,7 @@ app.get('/urls/new', (req, res) => {
 });
 
 app.get('/urls/:shortURL', (req, res) => {
-	const currentUser = req.cookies.user_id; // randomID
+	const currentUser = req.session.user_id; // randomID
 	const templateVars = {
 		urlDatabase,
 		shortURL: req.params.shortURL,
@@ -118,14 +128,14 @@ app.get('/u/:shortURL', (req, res) => {
 });
 
 app.get('/register', (req, res) => {
-	const currentUser = req.cookies.user_id; // randomID
+	const currentUser = req.session.user_id; // randomID
 	const templateVars = { user: users[currentUser] };
 
 	res.render('urls_register', templateVars);
 });
 
 app.get('/login', (req, res) => {
-	const currentUser = req.cookies.user_id; // randomID
+	const currentUser = req.session.user_id; // randomID
 	const templateVars = { user: users[currentUser] };
 
 	res.render('urls_login', templateVars);
@@ -141,7 +151,7 @@ app.post('/urls', (req, res) => {
 
 	urlDatabase[shortURL] = {
 		longURL,
-		userID: req.cookies.user_id,
+		userID: req.session.user_id,
 	};
 
 	res.redirect(`/urls/${shortURL}`);
@@ -151,7 +161,7 @@ app.post('/urls', (req, res) => {
 app.post('/urls/:id', (req, res) => {
 	// console.log('req.body', req.body);
 	// console.log('req.params', req.params);
-	const currentUser = req.cookies.user_id;
+	const currentUser = req.session.user_id;
 	const shortURL = req.params.id;
 	const { updatedLongURL } = req.body;
 
@@ -172,7 +182,7 @@ app.post('/urls/:shortURL/delete', (req, res) => {
 	// console.log(req.body); // {}
 	// console.log(req.params); // {shortURL: '<selectedShortURL>'}
 	const shortURL = req.params.shortURL;
-	const currentUser = req.cookies.user_id;
+	const currentUser = req.session.user_id;
 
 	if (urlDatabase[shortURL].userID === currentUser) {
 		delete urlDatabase[shortURL];
@@ -207,7 +217,8 @@ app.post('/login', (req, res) => {
 
 		// if (foundUser.password === submittedPassword) {
 		if (bcrypt.compareSync(submittedPassword, foundUser.password)) {
-			res.cookie('user_id', foundUser.id);
+			// res.cookie('user_id', foundUser.id);
+			req.session.user_id = foundUser.id;
 			res.redirect('/urls');
 		} else {
 			res.status(403).send('Incorrect password');
@@ -218,7 +229,8 @@ app.post('/login', (req, res) => {
 
 // Log out and clear cookie: _header
 app.post('/logout', (req, res) => {
-	res.clearCookie('user_id');
+	// res.clearCookie('user_id');
+	req.session = null;
 	res.redirect('/urls');
 });
 
@@ -237,9 +249,11 @@ app.post('/register', (req, res) => {
 			email: req.body.email,
 			password: bcrypt.hashSync(req.body.password, 10),
 		};
+
 		console.log(users);
 
-		res.cookie('user_id', randomID);
+		// res.cookie('user_id', randomID);
+		req.session.user_id = randomID;
 		res.redirect('/urls');
 	}
 });
