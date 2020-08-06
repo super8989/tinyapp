@@ -29,6 +29,9 @@ app.use(
 	})
 );
 
+// Custom CSS
+app.use(express.static(__dirname + '/public'));
+
 // Example of using bcrypt for passwords
 // const password = 'purple-monkey-dinosaur'; // found in the req.params object
 // const hashedPassword = bcrypt.hashSync(password, 10);
@@ -101,7 +104,7 @@ app.get('/urls/:shortURL', (req, res) => {
 	}
 
 	// *****RENDER A 404 PAGE HERE*****
-	res.send('page does not exist');
+	res.render('urls_404');
 
 	// const templateVars = {
 	// 	urlDatabase,
