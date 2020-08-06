@@ -205,7 +205,8 @@ app.post('/login', (req, res) => {
 	if (checkEmail(users, submittedEmail)) {
 		const foundUser = checkEmail(users, submittedEmail);
 
-		if (foundUser.password === submittedPassword) {
+		// if (foundUser.password === submittedPassword) {
+		if (bcrypt.compareSync(submittedPassword, foundUser.password)) {
 			res.cookie('user_id', foundUser.id);
 			res.redirect('/urls');
 		} else {
