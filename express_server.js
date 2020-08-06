@@ -5,7 +5,7 @@ const cookieParser = require('cookie-parser');
 const bcrypt = require('bcrypt');
 const cookieSession = require('cookie-session');
 
-const { checkEmail, urlsForUser } = require('./helpers');
+const { checkEmail, urlsForUser, generateRandomString } = require('./helpers');
 
 const app = express();
 const PORT = 8080;
@@ -44,11 +44,6 @@ const users = {
 	cP93zw: { id: 'cP93zw', email: 'sam@gmail.com', password: 'a' },
 	gR27io: { id: 'gR27io', email: 'greg@gmail.com', password: 'a' },
 };
-
-// return a string of 6 random alphanumeric characters
-function generateRandomString() {
-	return Math.random().toString(36).substr(2, 6);
-}
 
 // GET
 

@@ -20,4 +20,9 @@ const urlsForUser = (urlDB, id) => {
 	return filteredObj;
 };
 
-module.exports = { checkEmail, urlsForUser };
+// return a string of 6 random alphanumeric characters
+function generateRandomString() {
+	return Math.random().toString(36).substr(2, 6);
+}
+
+module.exports = { checkEmail, urlsForUser, generateRandomString };
