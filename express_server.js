@@ -77,7 +77,7 @@ app.get('/urls', (req, res) => {
 
 app.get('/urls/new', (req, res) => {
 	const currentUser = req.session.user_id; // randomID
-	const templateVars = { user: users[currentUser] };
+	const templateVars = { user: users[currentUser], emptyURL: false };
 
 	if (currentUser) {
 		res.render('urls_new', templateVars);
@@ -146,7 +146,13 @@ app.post('/urls', (req, res) => {
 	const longURL = req.body.longURL;
 
 	if (!longURL) {
-		res.status(403).send('Submit a URL');
+		// res.status(403).send('Submit a longURL');
+		const currentUser = req.session.user_id;
+		const templateVars = {
+			user: users[currentUser],
+			emptyURL: true,
+		};
+		res.render('urls_new', templateVars);
 	} else {
 		urlDatabase[shortURL] = {
 			longURL,
