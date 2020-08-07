@@ -23,6 +23,15 @@
 		<input class="form-control m-2" type="email" name="email" placeholder="Enter email" />
 		<label for="password" class='sr-only'>Password:</label>
 		<input class="form-control m-2" type="password" name="password" placeholder="Password" />
+
+		<% if (emptyForms) { %>
+		<p class="text-danger">Enter your email/password</p>
+		<%	} %>
+
+		<% if (userRegistered) { %>
+		<p class="text-danger">Already Registered</p>
+		<%	} %>
+
 		<div class="mb-3">
 			<a href="/login">Already registered?</a>
 		</div>

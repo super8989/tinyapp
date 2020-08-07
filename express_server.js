@@ -125,7 +125,11 @@ app.get('/u/:shortURL', (req, res) => {
 
 app.get('/register', (req, res) => {
 	const currentUser = req.session.user_id; // randomID
-	const templateVars = { user: users[currentUser] };
+	const templateVars = {
+		user: users[currentUser],
+		emptyForms: false,
+		userRegistered: false,
+	};
 
 	res.render('urls_register', templateVars);
 });
@@ -263,9 +267,25 @@ app.post('/logout', (req, res) => {
 app.post('/register', (req, res) => {
 	// console.log(req.body); // {email: '...com', password: '...'}
 	if (req.body.email === '' || req.body.password === '') {
-		res.status(400).send('Email and password must be submitted');
+		// res.status(400).send('Email and password must be submitted');
+		const currentUser = req.session.user_id; // randomID
+		const templateVars = {
+			user: users[currentUser],
+			emptyForms: true,
+			userRegistered: false,
+		};
+
+		res.render('urls_register', templateVars);
 	} else if (checkEmail(users, req.body.email)) {
-		res.status(400).send('Email already registered');
+		// res.status(400).send('Email already registered');
+		const currentUser = req.session.user_id; // randomID
+		const templateVars = {
+			user: users[currentUser],
+			emptyForms: false,
+			userRegistered: true,
+		};
+
+		res.render('urls_register', templateVars);
 	} else {
 		const randomID = generateRandomString();
 
