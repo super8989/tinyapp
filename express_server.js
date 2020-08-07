@@ -77,7 +77,11 @@ app.get('/urls', (req, res) => {
 
 app.get('/urls/new', (req, res) => {
 	const currentUser = req.session.user_id; // randomID
+<<<<<<< HEAD
 	const templateVars = { user: users[currentUser], emptyURL: false };
+=======
+	const templateVars = { user: users[currentUser] };
+>>>>>>> feature/display-login-error
 
 	if (currentUser) {
 		res.render('urls_new', templateVars);
@@ -125,14 +129,31 @@ app.get('/u/:shortURL', (req, res) => {
 
 app.get('/register', (req, res) => {
 	const currentUser = req.session.user_id; // randomID
+<<<<<<< HEAD
 	const templateVars = { user: users[currentUser] };
+=======
+	const templateVars = {
+		user: users[currentUser],
+		emptyForms: false,
+		userRegistered: false,
+	};
+>>>>>>> feature/display-login-error
 
 	res.render('urls_register', templateVars);
 });
 
 app.get('/login', (req, res) => {
 	const currentUser = req.session.user_id; // randomID
+<<<<<<< HEAD
 	const templateVars = { user: users[currentUser] };
+=======
+	const templateVars = {
+		user: users[currentUser],
+		emptyForms: false,
+		userNotFound: false,
+		wrongPassword: false,
+	};
+>>>>>>> feature/display-login-error
 
 	res.render('urls_login', templateVars);
 });
@@ -145,6 +166,7 @@ app.post('/urls', (req, res) => {
 	const shortURL = generateRandomString();
 	const longURL = req.body.longURL;
 
+<<<<<<< HEAD
 	if (!longURL) {
 		// res.status(403).send('Submit a longURL');
 		const currentUser = req.session.user_id;
@@ -161,6 +183,14 @@ app.post('/urls', (req, res) => {
 
 		res.redirect(`/urls/${shortURL}`);
 	}
+=======
+	urlDatabase[shortURL] = {
+		longURL,
+		userID: req.session.user_id,
+	};
+
+	res.redirect(`/urls/${shortURL}`);
+>>>>>>> feature/display-login-error
 });
 
 // Update longURL in the database: from urls_show
@@ -209,6 +239,7 @@ app.post('/login', (req, res) => {
 	const submittedPassword = req.body.password;
 
 	if (req.body.email === '' || req.body.password === '') {
+<<<<<<< HEAD
 		res.status(403).send('Email and password must be submitted');
 		return;
 	}
@@ -216,6 +247,31 @@ app.post('/login', (req, res) => {
 	if (!checkEmail(users, submittedEmail)) {
 		res.status(403).send('Email not found');
 		return;
+=======
+		// res.status(403).send('Email and password must be submitted');
+		// return;
+		const currentUser = req.session.user_id; // randomID
+		const templateVars = {
+			user: users[currentUser],
+			emptyForms: true,
+			userNotFound: false,
+			wrongPassword: false,
+		};
+		res.render('urls_login', templateVars);
+	}
+
+	if (!checkEmail(users, submittedEmail)) {
+		// res.status(403).send('Email not found');
+		// return;
+		const currentUser = req.session.user_id; // randomID
+		const templateVars = {
+			user: users[currentUser],
+			emptyForms: false,
+			userNotFound: true,
+			wrongPassword: false,
+		};
+		res.render('urls_login', templateVars);
+>>>>>>> feature/display-login-error
 	}
 
 	if (checkEmail(users, submittedEmail)) {
@@ -227,8 +283,21 @@ app.post('/login', (req, res) => {
 			req.session.user_id = foundUser.id;
 			res.redirect('/urls');
 		} else {
+<<<<<<< HEAD
 			res.status(403).send('Incorrect password');
 			return;
+=======
+			// res.status(403).send('Incorrect password');
+			// return;
+			const currentUser = req.session.user_id; // randomID
+			const templateVars = {
+				user: users[currentUser],
+				emptyForms: false,
+				userNotFound: false,
+				wrongPassword: true,
+			};
+			res.render('urls_login', templateVars);
+>>>>>>> feature/display-login-error
 		}
 	}
 });
@@ -244,9 +313,31 @@ app.post('/logout', (req, res) => {
 app.post('/register', (req, res) => {
 	// console.log(req.body); // {email: '...com', password: '...'}
 	if (req.body.email === '' || req.body.password === '') {
+<<<<<<< HEAD
 		res.status(400).send('Email and password must be submitted');
 	} else if (checkEmail(users, req.body.email)) {
 		res.status(400).send('Email already registered');
+=======
+		// res.status(400).send('Email and password must be submitted');
+		const currentUser = req.session.user_id; // randomID
+		const templateVars = {
+			user: users[currentUser],
+			emptyForms: true,
+			userRegistered: false,
+		};
+
+		res.render('urls_register', templateVars);
+	} else if (checkEmail(users, req.body.email)) {
+		// res.status(400).send('Email already registered');
+		const currentUser = req.session.user_id; // randomID
+		const templateVars = {
+			user: users[currentUser],
+			emptyForms: false,
+			userRegistered: true,
+		};
+
+		res.render('urls_register', templateVars);
+>>>>>>> feature/display-login-error
 	} else {
 		const randomID = generateRandomString();
 
